@@ -17,19 +17,18 @@ setInterval(() => {
 
 
 let empty = ' ',
-  width = 4,
-  height = 4,
+  field_size = 4,
   score = 0;
 
 function arrayToGrid() {
-  for (let i = 0; i < height; ++i) {
-    for (let j = 0; j < width; ++j)
-      document.getElementById("cell" + (i * width + 1 + j)).textContent = game_field[i][j];
+  for (let i = 0; i < field_size; ++i) {
+    for (let j = 0; j < field_size; ++j)
+      document.getElementById("cell" + (i * field_size + 1 + j)).textContent = game_field[i][j];
   }
 }
 
 function new_game() {
-  for (let i = 0; i < height; i++) {
+  for (let i = 0; i < field_size; i++) {
     game_field[i].fill(empty);
   }
   score = 0;
@@ -40,10 +39,9 @@ function new_game() {
 }
 
 
-
 function check_filling(array) {
-  for (let i = 0; i < height; ++i) {
-    for (var j = 0; j < width; ++j) {
+  for (let i = 0; i < field_size; ++i) {
+    for (let j = 0; j < field_size; ++j) {
       if (array[i][j] === empty) {
         return true;
       }
@@ -56,8 +54,8 @@ function number_generation(array) {
   if (!check_filling(game_field))
     return;
   while (true) {
-    let y = Math.floor(Math.random() * height),
-      x = Math.floor(Math.random() * width);
+    let y = Math.floor(Math.random() * field_size),
+      x = Math.floor(Math.random() * field_size);
     if (array[y][x] === empty) {
       array[y][x] = 2;
       break;
@@ -65,20 +63,22 @@ function number_generation(array) {
   }
 }
 
-function game_over() {
-  if (check_filling(game_field))
+function game_over(array) {
+  if (check_filling(array))
     return false;
-  for (let j = 0; j < array.length - 1; ++j) {
-    // there will be a check for the possibility of a move
+  for (let j = 0; j < field_size - 1; ++j) {
+    for (let i = 0; i < field_size; ++i) {
+      if (array[i][j] === array[i][j + 1] || array[j][i] === array[j + 1][i]) {
+        return false;
+      }
+    }
   }
-
   return true;
 }
 
-
 function move_down(array) {
   let abc = [];
-  let wasMovie = false;
+  let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = array.length - 2; i >= 0; --i) {
       if (array[i][j] === empty)
@@ -92,21 +92,21 @@ function move_down(array) {
         document.getElementById("score").textContent = ("Score: " + score);
         array[i][j] = empty;
         abc.push('' + (k + 1) + j);
-        wasMovie = true;
+        wasMove = true;
       }
       if (k !== i) {
         array[k][j] = array[i][j];
         array[i][j] = empty;
-        wasMovie = true;
+        wasMove = true;
       }
     }
   }
-  return wasMovie;
+  return wasMove;
 }
 
 function move_up(array) {
   let abc = [];
-  let wasMovie = false;
+  let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = 1; i < array.length; ++i) {
       if (array[i][j] === empty)
@@ -120,22 +120,22 @@ function move_up(array) {
         document.getElementById("score").textContent = ("Score: " + score);
         array[i][j] = empty;
         abc.push('' + (k - 1) + j);
-        wasMovie = true;
+        wasMove = true;
       }
       if (k !== i) {
         array[k][j] = array[i][j];
         array[i][j] = empty;
-        wasMovie = true;
+        wasMove = true;
       }
     }
   }
-  return wasMovie;
+  return wasMove;
 }
 
 
 function move_left(array) {
   let abc = [];
-  let wasMovie = false;
+  let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = 1; i < array.length; ++i) {
       if (array[j][i] === empty)
@@ -149,21 +149,21 @@ function move_left(array) {
         document.getElementById("score").textContent = ("Score: " + score);
         array[j][i] = empty;
         abc.push('' + j + (k - 1));
-        wasMovie = true;
+        wasMove = true;
       }
       if (k !== i) {
         array[j][k] = array[j][i];
         array[j][i] = empty;
-        wasMovie = true;
+        wasMove = true;
       }
     }
   }
-  return wasMovie;
+  return wasMove;
 }
 
 function move_right(array) {
   let abc = [];
-  let wasMovie = false;
+  let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = array.length - 2; i >= 0; --i) {
       if (array[j][i] === empty)
@@ -177,41 +177,44 @@ function move_right(array) {
         document.getElementById("score").textContent = ("Score: " + score);
         array[j][i] = empty;
         abc.push('' + j + (k + 1));
-        wasMovie = true;
+        wasMove = true;
       }
       if (k !== i) {
         array[j][k] = array[j][i];
         array[j][i] = empty;
-        wasMovie = true;
+        wasMove = true;
       }
     }
   }
-  return wasMovie;
+  return wasMove;
 }
 
 function key_pressed(event) {
+  let wasMove = false;
   switch (event.keyCode) {
     case 37:
-      move_left(game_field);
+      wasMove = move_left(game_field);
       break;
     case 38:
-      move_up(game_field);
+      wasMove = move_up(game_field);
       break;
     case 39:
-      move_right(game_field);
+      wasMove = move_right(game_field);
       break;
     case 40:
-      if (!move_down(game_field))
-        return;
+      wasMove = move_down(game_field);
       break;
     default:
       return;
   }
-  if (!game_over()) {
-    number_generation(game_field);
-    arrayToGrid();
+  if (!game_over(game_field)) {
+    if (wasMove) {
+      number_generation(game_field);
+      arrayToGrid();
+    }
   } else {
-    // Game over!
+    alert("Game Over!");
+    new_game();
   }
 }
 
