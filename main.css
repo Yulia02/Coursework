@@ -1,10 +1,14 @@
+@font-face {
+    font-family: gameFont;
+    src: url('gameFont.woff') format('woff');
+}
+
 body {
     background-color: #F5F5DC;
     position: fixed;
     top: 3vmax;
     width: 100vw;
     height: 100vh;
-
 }
 
 .field{
@@ -17,6 +21,21 @@ body {
     justify-items: center;
     align-items: center;
     justify-content: center;
+}
+
+.mask {
+    background-color: rgba(255, 255, 255, 0.8);;
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    visibility: hidden;
+}
+
+h1 {
+    font-family: 'gameFont';
+    text-align: center;
+    line-height: 75vmin;
+    font-size: 10vmin;
 }
 
 .cell{
