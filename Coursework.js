@@ -9,12 +9,26 @@ let game_field = [
   [' ', ' ', ' ', ' '],
 ];
 
+const letters = ['G', 'A', 'M', 'E', ' ', 'O', 'V', 'E', 'R'];
+
 setInterval(() => {
-  for (let i = 0; i < 16; i++) {
-    cells[i].style.fontSize = 16 / Math.pow(cells[i].innerText.length, 0.5) + 'vmin';
-  }
+    for (let i = 0; i < 16; i++) {
+        cells[i].style.fontSize = 16 / Math.pow(cells[i].innerText.length, 0.5) + 'vmin';
+    }
+    document.getElementsByClassName('mask')[0].style.left = (window.innerWidth - document.getElementsByClassName('field')[0].offsetWidth)/2 + 'px';
+    document.getElementsByClassName('mask')[0].style.top = document.getElementsByClassName('header')[0].offsetHeight + 'px';
 }, 0);
 
+function tranformLetters() {
+  setTimeout(function() {
+    for (let i = 0; i <= letters.length; i++) {
+      document.getElementsByClassName('letter')[i].innerText = ' ';
+      setTimeout(function() {
+        document.getElementsByClassName('letter')[i].innerText = letters[i];
+      },i*250);
+    }
+  },1)
+}
 
 let empty = ' ',
   field_size = 4,
@@ -75,6 +89,22 @@ function game_over(array) {
   }
   return true;
 }
+
+function game_over_visual() {
+    document.getElementsByClassName('mask')[0].style.visibility = 'visible';
+    tranformLetters();
+    setTimeout(() => {
+      document.getElementsByClassName('right_block')[0].style.backgroundColor = '#17a2b8';
+      document.getElementsByClassName('right_block')[0].style.color = '#F5F5DC';
+    }, 2500);
+
+    document.getElementsByClassName('right_block')[0].addEventListener('click', () => {
+      document.getElementsByClassName('right_block')[0].style.backgroundColor = '#F5F5DC';
+      document.getElementsByClassName('right_block')[0].style.color = '#17a2b8';
+      document.getElementsByClassName('mask')[0].style.visibility = 'hidden';
+  });
+}
+
 
 function move_down(array) {
   let abc = [];
@@ -213,7 +243,7 @@ function key_pressed(event) {
       arrayToGrid();
     }
   } else {
-    alert("Game Over!");
+   game_over_visual()
     new_game();
   }
 }
