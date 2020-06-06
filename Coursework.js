@@ -1,8 +1,8 @@
 'use strict';
 
-let cells = document.getElementsByClassName('cell');
+const cells = document.getElementsByClassName('cell');
 
-let game_field = [
+const gameField = [
   [' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' '],
   [' ', ' ', ' ', ' '],
@@ -12,50 +12,54 @@ let game_field = [
 const letters = ['G', 'A', 'M', 'E', ' ', 'O', 'V', 'E', 'R'];
 
 setInterval(() => {
-    for (let i = 0; i < 16; i++) {
-        cells[i].style.fontSize = 16 / Math.pow(cells[i].innerText.length, 0.5) + 'vmin';
-    }
-    document.getElementsByClassName('mask')[0].style.left = (window.innerWidth - document.getElementsByClassName('field')[0].offsetWidth)/2 + 'px';
-    document.getElementsByClassName('mask')[0].style.top = document.getElementsByClassName('header')[0].offsetHeight + 'px';
+  for (let i = 0; i < 16; i++) {
+    cells[i].style.fontSize = 16 / Math.pow(cells[i].innerText.length, 0.5) +
+    'vmin';
+  }
+  document.getElementsByClassName('mask')[0].style.left = (window.innerWidth -
+    document.getElementsByClassName('field')[0].offsetWidth) / 2 + 'px';
+  document.getElementsByClassName('mask')[0].style.top =
+  document.getElementsByClassName('header')[0].offsetHeight + 'px';
 }, 0);
 
 function tranformLetters() {
-  setTimeout(function() {
+  setTimeout(() => {
     for (let i = 0; i <= letters.length; i++) {
       document.getElementsByClassName('letter')[i].innerText = ' ';
-      setTimeout(function() {
+      setTimeout(() => {
         document.getElementsByClassName('letter')[i].innerText = letters[i];
-      },i*250);
+      }, i * 250);
     }
-  },1)
+  }, 1);
 }
 
-let empty = ' ',
-  field_size = 4,
-  score = 0;
+const empty = ' ',
+  fieldSize = 4;
+let score = 0;
 
 function arrayToGrid() {
-  for (let i = 0; i < field_size; ++i) {
-    for (let j = 0; j < field_size; ++j)
-      document.getElementById("cell" + (i * field_size + 1 + j)).textContent = game_field[i][j];
+  for (let i = 0; i < fieldSize; ++i) {
+    for (let j = 0; j < fieldSize; ++j)
+      document.getElementById('cell' +
+      (i * fieldSize + 1 + j)).textContent = gameField[i][j];
   }
 }
 
-function new_game() {
-  for (let i = 0; i < field_size; i++) {
-    game_field[i].fill(empty);
+function newGame() {
+  for (let i = 0; i < fieldSize; i++) {
+    gameField[i].fill(empty);
   }
   score = 0;
-  document.getElementById("score").textContent = ("Score: " + score);
-  number_generation(game_field);
-  number_generation(game_field);
+  document.getElementById('score').textContent = ('Score: ' + score);
+  numberGeneration(gameField);
+  numberGeneration(gameField);
   arrayToGrid();
 }
 
 
-function check_filling(array) {
-  for (let i = 0; i < field_size; ++i) {
-    for (let j = 0; j < field_size; ++j) {
+function checkFilling(array) {
+  for (let i = 0; i < fieldSize; ++i) {
+    for (let j = 0; j < fieldSize; ++j) {
       if (array[i][j] === empty) {
         return true;
       }
@@ -64,12 +68,12 @@ function check_filling(array) {
   return false;
 }
 
-function number_generation(array) {
-  if (!check_filling(game_field))
+function numberGeneration(array) {
+  if (!checkFilling(gameField))
     return;
   while (true) {
-    let y = Math.floor(Math.random() * field_size),
-      x = Math.floor(Math.random() * field_size);
+    const y = Math.floor(Math.random() * fieldSize),
+      x = Math.floor(Math.random() * fieldSize);
     if (array[y][x] === empty) {
       array[y][x] = 2;
       break;
@@ -77,11 +81,11 @@ function number_generation(array) {
   }
 }
 
-function game_over(array) {
-  if (check_filling(array))
+function gameOver(array) {
+  if (checkFilling(array))
     return false;
-  for (let j = 0; j < field_size - 1; ++j) {
-    for (let i = 0; i < field_size; ++i) {
+  for (let j = 0; j < fieldSize - 1; ++j) {
+    for (let i = 0; i < fieldSize; ++i) {
       if (array[i][j] === array[i][j + 1] || array[j][i] === array[j + 1][i]) {
         return false;
       }
@@ -90,24 +94,28 @@ function game_over(array) {
   return true;
 }
 
-function game_over_visual() {
-    document.getElementsByClassName('mask')[0].style.visibility = 'visible';
-    tranformLetters();
-    setTimeout(() => {
-      document.getElementsByClassName('right_block')[0].style.backgroundColor = '#17a2b8';
-      document.getElementsByClassName('right_block')[0].style.color = '#F5F5DC';
-    }, 2500);
 
-    document.getElementsByClassName('right_block')[0].addEventListener('click', () => {
-      document.getElementsByClassName('right_block')[0].style.backgroundColor = '#F5F5DC';
+function gameOverVisual() {
+  document.getElementsByClassName('mask')[0].style.visibility = 'visible';
+  tranformLetters();
+  setTimeout(() => {
+    document.getElementsByClassName('right_block')[0].style.backgroundColor =
+    '#17a2b8';
+    document.getElementsByClassName('right_block')[0].style.color = '#F5F5DC';
+  }, 2500);
+
+  document.getElementsByClassName('right_block')[0].
+    addEventListener('click', () => {
+      document.getElementsByClassName('right_block')[0].style.backgroundColor =
+      '#F5F5DC';
       document.getElementsByClassName('right_block')[0].style.color = '#17a2b8';
       document.getElementsByClassName('mask')[0].style.visibility = 'hidden';
-  });
+    });
 }
 
 
-function move_down(array) {
-  let abc = [];
+function moveDown(array) {
+  const abc = [];
   let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = array.length - 2; i >= 0; --i) {
@@ -119,7 +127,7 @@ function move_down(array) {
         !abc.includes('' + (k + 1) + j)) {
         array[k + 1][j] *= 2;
         score += array[k + 1][j];
-        document.getElementById("score").textContent = ("Score: " + score);
+        document.getElementById('score').textContent = ('Score: ' + score);
         array[i][j] = empty;
         abc.push('' + (k + 1) + j);
         wasMove = true;
@@ -134,8 +142,8 @@ function move_down(array) {
   return wasMove;
 }
 
-function move_up(array) {
-  let abc = [];
+function moveUp(array) {
+  const abc = [];
   let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = 1; i < array.length; ++i) {
@@ -147,7 +155,7 @@ function move_up(array) {
         !abc.includes('' + (k - 1) + j)) {
         array[k - 1][j] *= 2;
         score += array[k - 1][j];
-        document.getElementById("score").textContent = ("Score: " + score);
+        document.getElementById('score').textContent = ('Score: ' + score);
         array[i][j] = empty;
         abc.push('' + (k - 1) + j);
         wasMove = true;
@@ -163,8 +171,8 @@ function move_up(array) {
 }
 
 
-function move_left(array) {
-  let abc = [];
+function moveLeft(array) {
+  const abc = [];
   let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = 1; i < array.length; ++i) {
@@ -176,7 +184,7 @@ function move_left(array) {
         !abc.includes('' + j + (k - 1))) {
         array[j][k - 1] *= 2;
         score += array[j][k - 1];
-        document.getElementById("score").textContent = ("Score: " + score);
+        document.getElementById('score').textContent = ('Score: ' + score);
         array[j][i] = empty;
         abc.push('' + j + (k - 1));
         wasMove = true;
@@ -191,8 +199,8 @@ function move_left(array) {
   return wasMove;
 }
 
-function move_right(array) {
-  let abc = [];
+function moveRight(array) {
+  const abc = [];
   let wasMove = false;
   for (let j = 0; j < array.length; ++j) {
     for (let i = array.length - 2; i >= 0; --i) {
@@ -204,7 +212,7 @@ function move_right(array) {
         !abc.includes('' + j + (k + 1))) {
         array[j][k + 1] *= 2;
         score += array[j][k + 1];
-        document.getElementById("score").textContent = ("Score: " + score);
+        document.getElementById('score').textContent = ('Score: ' + score);
         array[j][i] = empty;
         abc.push('' + j + (k + 1));
         wasMove = true;
@@ -219,37 +227,37 @@ function move_right(array) {
   return wasMove;
 }
 
-function key_pressed(event) {
+function keyPressed(event) {
   let wasMove = false;
   switch (event.keyCode) {
-    case 37:
-      wasMove = move_left(game_field);
-      break;
-    case 38:
-      wasMove = move_up(game_field);
-      break;
-    case 39:
-      wasMove = move_right(game_field);
-      break;
-    case 40:
-      wasMove = move_down(game_field);
-      break;
-    default:
-      return;
+  case 37:
+    wasMove = moveLeft(gameField);
+    break;
+  case 38:
+    wasMove = moveUp(gameField);
+    break;
+  case 39:
+    wasMove = moveRight(gameField);
+    break;
+  case 40:
+    wasMove = moveDown(gameField);
+    break;
+  default:
+    return;
   }
-  if (!game_over(game_field)) {
+  if (!gameOver(gameField)) {
     if (wasMove) {
-      number_generation(game_field);
+      numberGeneration(gameField);
       arrayToGrid();
     }
   } else {
-   game_over_visual()
-    new_game();
+    gameOverVisual();
+    newGame();
   }
 }
 
 
-addEventListener("keydown", key_pressed);
-addEventListener("DOMContentLoaded", arrayToGrid);
-number_generation(game_field);
-number_generation(game_field);
+addEventListener('keydown', keyPressed);
+addEventListener('DOMContentLoaded', arrayToGrid);
+numberGeneration(gameField);
+numberGeneration(gameField);
