@@ -9,12 +9,12 @@ const letters = ['G', 'A', 'M', 'E', ' ', 'O', 'V', 'E', 'R'];
 setInterval(() => {
   for (let i = 0; i < 16; i++) {
     cells[i].style.fontSize = 16 / Math.pow(cells[i].innerText.length, 0.5) +
-    'vmin';
+      'vmin';
   }
   document.getElementsByClassName('mask')[0].style.left = (window.innerWidth -
     document.getElementsByClassName('field')[0].offsetWidth) / 2 + 'px';
   document.getElementsByClassName('mask')[0].style.top =
-  document.getElementsByClassName('header')[0].offsetHeight + 'px';
+    document.getElementsByClassName('header')[0].offsetHeight + 'px';
 }, 0);
 
 function tranformLetters() {
@@ -34,7 +34,7 @@ function arrayToGrid() {
   for (let i = 0; i < field.fieldSize; ++i) {
     for (let j = 0; j < field.fieldSize; ++j)
       document.getElementById('cell' +
-      (i * field.fieldSize + 1 + j)).textContent = field.gameField[i][j];
+        (i * field.fieldSize + 1 + j)).textContent = field.gameField[i][j];
   }
 }
 
@@ -49,37 +49,37 @@ function gameOverVisual() {
   tranformLetters();
   setTimeout(() => {
     document.getElementsByClassName('right_block')[0].style.backgroundColor =
-    '#17a2b8';
+      '#17a2b8';
     document.getElementsByClassName('right_block')[0].style.color = '#F5F5DC';
   }, 2500);
 
   document.getElementsByClassName('right_block')[0].
-    addEventListener('click', () => {
-      document.getElementsByClassName('right_block')[0].style.backgroundColor =
+  addEventListener('click', () => {
+    document.getElementsByClassName('right_block')[0].style.backgroundColor =
       '#F5F5DC';
-      document.getElementsByClassName('right_block')[0].style.color = '#17a2b8';
-      document.getElementsByClassName('mask')[0].style.visibility = 'hidden';
-    });
+    document.getElementsByClassName('right_block')[0].style.color = '#17a2b8';
+    document.getElementsByClassName('mask')[0].style.visibility = 'hidden';
+  });
 }
 
 
 function keyPressed(event) {
   let wasMove = false;
   switch (event.keyCode) {
-  case 37:
-    wasMove = field.moveLeft();
-    break;
-  case 38:
-    wasMove = field.moveUp();
-    break;
-  case 39:
-    wasMove = field.moveRight();
-    break;
-  case 40:
-    wasMove = field.moveDown();
-    break;
-  default:
-    return;
+    case 37:
+      wasMove = field.moveLeft();
+      break;
+    case 38:
+      wasMove = field.moveUp();
+      break;
+    case 39:
+      wasMove = field.moveRight();
+      break;
+    case 40:
+      wasMove = field.moveDown();
+      break;
+    default:
+      return;
   }
   if (!field.gameOver()) {
     if (wasMove) {
@@ -96,4 +96,3 @@ function keyPressed(event) {
 
 addEventListener('keydown', keyPressed);
 addEventListener('DOMContentLoaded', arrayToGrid);
-
