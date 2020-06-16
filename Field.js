@@ -1,11 +1,12 @@
+'use strict';
 class Field {
 
-  score = 0;
-
   constructor(fieldSize = 4, empty = ' ') {
+    this.score = 0;
     this.fieldSize = fieldSize;
     this.empty = empty;
-    this.gameField = [...Array(fieldSize)].map(e => Array(fieldSize).fill(empty));
+    this.gameField = [...Array(fieldSize)].map(() =>
+      Array(fieldSize).fill(empty));
     this.numberGeneration();
     this.numberGeneration();
   }
@@ -59,20 +60,22 @@ class Field {
   }
 
   moveDown() {
-    const abc = [];
+    const temp = [];
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = this.gameField.length - 2; i >= 0; --i) {
         if (this.gameField[i][j] === this.empty)
           continue;
         let k = i;
-        while (k < this.gameField.length - 1 && this.gameField[k + 1][j] === this.empty) ++k;
-        if (k < this.gameField.length - 1 && this.gameField[k + 1][j] === this.gameField[i][j] &&
-          !abc.includes('' + (k + 1) + j)) {
+        while (k < this.gameField.length - 1 && this.gameField[k + 1][j] ===
+          this.empty) ++k;
+        if (k < this.gameField.length - 1 && this.gameField[k + 1][j] ===
+          this.gameField[i][j] &&
+          !temp.includes('' + (k + 1) + j)) {
           this.gameField[k + 1][j] *= 2;
           this.score += this.gameField[k + 1][j];
           this.gameField[i][j] = this.empty;
-          abc.push('' + (k + 1) + j);
+          temp.push('' + (k + 1) + j);
           wasMove = true;
         }
         if (k !== i) {
@@ -86,7 +89,7 @@ class Field {
   }
 
   moveUp() {
-    const abc = [];
+    const temp = [];
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = 1; i < this.gameField.length; ++i) {
@@ -95,11 +98,11 @@ class Field {
         let k = i;
         while (k > 0 && this.gameField[k - 1][j] === this.empty) --k;
         if (k > 0 && this.gameField[k - 1][j] === this.gameField[i][j] &&
-          !abc.includes('' + (k - 1) + j)) {
+          !temp.includes('' + (k - 1) + j)) {
           this.gameField[k - 1][j] *= 2;
           this.score += this.gameField[k - 1][j];
           this.gameField[i][j] = this.empty;
-          abc.push('' + (k - 1) + j);
+          temp.push('' + (k - 1) + j);
           wasMove = true;
         }
         if (k !== i) {
@@ -114,7 +117,7 @@ class Field {
 
 
   moveLeft() {
-    const abc = [];
+    const temp = [];
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = 1; i < this.gameField.length; ++i) {
@@ -123,11 +126,11 @@ class Field {
         let k = i;
         while (k > 0 && this.gameField[j][k - 1] === this.empty) --k;
         if (k > 0 && this.gameField[j][k - 1] === this.gameField[j][i] &&
-          !abc.includes('' + j + (k - 1))) {
+          !temp.includes('' + j + (k - 1))) {
           this.gameField[j][k - 1] *= 2;
           this.score += this.gameField[j][k - 1];
           this.gameField[j][i] = this.empty;
-          abc.push('' + j + (k - 1));
+          temp.push('' + j + (k - 1));
           wasMove = true;
         }
         if (k !== i) {
@@ -141,20 +144,22 @@ class Field {
   }
 
   moveRight() {
-    const abc = [];
+    const temp = [];
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = this.gameField.length - 2; i >= 0; --i) {
         if (this.gameField[j][i] === this.empty)
           continue;
         let k = i;
-        while (k < this.gameField.length - 1 && this.gameField[j][k + 1] === this.empty) ++k;
-        if (k < this.gameField.length - 1 && this.gameField[j][k + 1] === this.gameField[j][i] &&
-          !abc.includes('' + j + (k + 1))) {
+        while (k < this.gameField.length - 1 && this.gameField[j][k + 1] ===
+          this.empty) ++k;
+        if (k < this.gameField.length - 1 && this.gameField[j][k + 1] ===
+          this.gameField[j][i] &&
+          !temp.includes('' + j + (k + 1))) {
           this.gameField[j][k + 1] *= 2;
           this.score += this.gameField[j][k + 1];
           this.gameField[j][i] = this.empty;
-          abc.push('' + j + (k + 1));
+          temp.push('' + j + (k + 1));
           wasMove = true;
         }
         if (k !== i) {
