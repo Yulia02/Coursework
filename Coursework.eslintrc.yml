@@ -8,6 +8,9 @@
   "parserOptions": {
     "ecmaVersion": 2020
   },
+  "globals": {
+    "Field": true
+  },
   "rules": {
     "indent": [
       "error",
@@ -120,6 +123,10 @@
     ],
     "no-unneeded-ternary": [
       "error"
+    ],
+    "no-unused-vars": [
+        "error",
+        {"varsIgnorePattern": "Field|newGame"}
     ],
     "no-whitespace-before-property": [
       "error"
