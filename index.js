@@ -7,28 +7,30 @@ const cells = document.getElementsByClassName('cell');
 const letters = ['G', 'A', 'M', 'E', ' ', 'O', 'V', 'E', 'R'];
 
 setInterval(() => {
-  for (let i = 0; i < 16; i++) {
-    cells[i].style.fontSize = 16 / Math.pow(cells[i].innerText.length, 0.5) +
-      'vmin';
+  const cellsNum = 16;
+  for (let i = 0; i < cellsNum; i++) {
+    const size = cellsNum / Math.pow(cells[i].innerText.length, 0.5);
+    cells[i].style.fontSize =  size + 'vmin';
   }
-  document.getElementsByClassName('mask')[0].style.left = (window.innerWidth -
-    document.getElementsByClassName('field')[0].offsetWidth) / 2 + 'px';
-  document.getElementsByClassName('mask')[0].style.top =
-    document.getElementsByClassName('header')[0].offsetHeight + 'px';
+  const mask = document.getElementsByClassName('mask')[0];
+  const field = document.getElementsByClassName('field')[0];
+  const header = document.getElementsByClassName('header')[0];
+  mask.style.left = (window.innerWidth - field.offsetWidth) / 2 + 'px';
+  mask.style.top = header.offsetHeight + 'px';
 }, 0);
 
 function tranformLetters() {
+  const timerInterval = 250;
   setTimeout(() => {
     for (let i = 0; i <= letters.length; i++) {
-      document.getElementsByClassName('letter')[i].innerText = ' ';
+      const letter = document.getElementsByClassName('letter')[i];
+      letter.innerText = ' ';
       setTimeout(() => {
-        document.getElementsByClassName('letter')[i].innerText = letters[i];
-      }, i * 250);
+        letter.innerText = letters[i];
+      }, i * timerInterval);
     }
   }, 1);
 }
-
-
 
 function arrayToGrid() {
   for (let i = 0; i < field.fieldSize; ++i) {
@@ -48,39 +50,36 @@ function gameOverVisual() {
   document.getElementsByClassName('mask')[0].style.visibility = 'visible';
   tranformLetters();
   setTimeout(() => {
-    document.getElementsByClassName('right_block')[0].style.backgroundColor =
-      '#17a2b8';
-    document.getElementsByClassName('right_block')[0].style.color = '#F5F5DC';
+    const rightBlock = document.getElementsByClassName('rightBlock')[0];
+    rightBlock.style.backgroundColor = '#17a2b8';
+    rightBlock.style.color = '#F5F5DC';
   }, 2500);
-
-  document.getElementsByClassName('right_block')[0].
+  document.getElementsByClassName('rightBlock')[0].
     addEventListener('click', () => {
-      document.getElementsByClassName('right_block')[0].style.backgroundColor =
-      '#F5F5DC';
-      document.getElementsByClassName('right_block')[0].style.color = '#17a2b8';
+      const rightBlock = document.getElementsByClassName('rightBlock')[0];
+      rightBlock.style.backgroundColor = '#F5F5DC';
+      rightBlock.style.color = '#17a2b8';
       document.getElementsByClassName('mask')[0].style.visibility = 'hidden';
     });
 }
 
-
 function keyPressed(event) {
-  let wasMove = false;
-  switch (event.keyCode) {
-  case 37:
-    wasMove = field.moveLeft();
-    break;
-  case 38:
-    wasMove = field.moveUp();
-    break;
-  case 39:
-    wasMove = field.moveRight();
-    break;
-  case 40:
-    wasMove = field.moveDown();
-    break;
-  default:
-    return;
-  }
+  const obj = {
+    get 37() {
+      return field.moveLeft();
+    },
+    get 38() {
+      return field.moveUp();
+    },
+    get 39() {
+      return field.moveRight();
+    },
+    get 40() {
+      return field.moveDown();
+    },
+  };
+
+  const wasMove = obj[event.keyCode];
   if (!field.gameOver()) {
     if (wasMove) {
       field.numberGeneration();
@@ -91,7 +90,6 @@ function keyPressed(event) {
     gameOverVisual();
   }
 }
-
 
 addEventListener('keydown', keyPressed);
 addEventListener('DOMContentLoaded', arrayToGrid);

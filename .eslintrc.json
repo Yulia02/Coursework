@@ -9,7 +9,7 @@
     "ecmaVersion": 2020
   },
   "globals": {
-    "Field": true
+    "BigInt": true
   },
   "rules": {
     "indent": [
@@ -123,10 +123,6 @@
     ],
     "no-unneeded-ternary": [
       "error"
-    ],
-    "no-unused-vars": [
-        "error",
-        {"varsIgnorePattern": "Field|newGame"}
     ],
     "no-whitespace-before-property": [
       "error"

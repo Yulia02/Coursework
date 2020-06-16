@@ -1,12 +1,12 @@
 'use strict';
-class Field {
 
+class Field {
   constructor(fieldSize = 4, empty = ' ') {
     this.score = 0;
     this.fieldSize = fieldSize;
     this.empty = empty;
-    this.gameField = [...Array(fieldSize)].map(() =>
-      Array(fieldSize).fill(empty));
+    this.gameField = [...Array(fieldSize)]
+      .map(() => Array(fieldSize).fill(empty));
     this.numberGeneration();
     this.numberGeneration();
   }
@@ -18,7 +18,6 @@ class Field {
     this.score = 0;
     this.numberGeneration();
     this.numberGeneration();
-
   }
 
   checkFilling() {
@@ -33,11 +32,10 @@ class Field {
   }
 
   numberGeneration() {
-    if (!this.checkFilling())
-      return;
+    if (!this.checkFilling()) return;
     while (true) {
-      const y = Math.floor(Math.random() * this.fieldSize),
-        x = Math.floor(Math.random() * this.fieldSize);
+      const y = Math.floor(Math.random() * this.fieldSize);
+      const x = Math.floor(Math.random() * this.fieldSize);
       if (this.gameField[y][x] === this.empty) {
         this.gameField[y][x] = 2;
         break;
@@ -50,10 +48,9 @@ class Field {
       return false;
     for (let j = 0; j < this.fieldSize - 1; ++j) {
       for (let i = 0; i < this.fieldSize; ++i) {
-        if (this.gameField[i][j] === this.gameField[i][j + 1] ||
-          this.gameField[j][i] === this.gameField[j + 1][i]) {
-          return false;
-        }
+        const fullRight = this.gameField[i][j] === this.gameField[i][j + 1];
+        const fullDown = this.gameField[j][i] === this.gameField[j + 1][i];
+        if (fullRight || fullDown) return false;
       }
     }
     return true;
@@ -67,16 +64,16 @@ class Field {
         if (this.gameField[i][j] === this.empty)
           continue;
         let k = i;
-        while (k < this.gameField.length - 1 && this.gameField[k + 1][j] ===
-          this.empty) ++k;
-        if (k < this.gameField.length - 1 && this.gameField[k + 1][j] ===
-          this.gameField[i][j] &&
-          !temp.includes('' + (k + 1) + j)) {
-          this.gameField[k + 1][j] *= 2;
-          this.score += this.gameField[k + 1][j];
-          this.gameField[i][j] = this.empty;
-          temp.push('' + (k + 1) + j);
-          wasMove = true;
+        const limit = this.gameField.length - 1;
+        while (k < limit && this.gameField[k + 1][j] === this.empty) ++k;
+        if (k < limit && !temp.includes('' + (k + 1) + j)) {
+          if (this.gameField[k + 1][j] === this.gameField[i][j]) {
+            this.gameField[k + 1][j] *= 2;
+            this.score += this.gameField[k + 1][j];
+            this.gameField[i][j] = this.empty;
+            temp.push('' + (k + 1) + j);
+            wasMove = true;
+          }
         }
         if (k !== i) {
           this.gameField[k][j] = this.gameField[i][j];
@@ -97,13 +94,14 @@ class Field {
           continue;
         let k = i;
         while (k > 0 && this.gameField[k - 1][j] === this.empty) --k;
-        if (k > 0 && this.gameField[k - 1][j] === this.gameField[i][j] &&
-          !temp.includes('' + (k - 1) + j)) {
-          this.gameField[k - 1][j] *= 2;
-          this.score += this.gameField[k - 1][j];
-          this.gameField[i][j] = this.empty;
-          temp.push('' + (k - 1) + j);
-          wasMove = true;
+        if (k > 0 && !temp.includes('' + (k - 1) + j)) {
+          if (this.gameField[k - 1][j] === this.gameField[i][j]) {
+            this.gameField[k - 1][j] *= 2;
+            this.score += this.gameField[k - 1][j];
+            this.gameField[i][j] = this.empty;
+            temp.push('' + (k - 1) + j);
+            wasMove = true;
+          }
         }
         if (k !== i) {
           this.gameField[k][j] = this.gameField[i][j];
@@ -115,7 +113,6 @@ class Field {
     return wasMove;
   }
 
-
   moveLeft() {
     const temp = [];
     let wasMove = false;
@@ -125,13 +122,14 @@ class Field {
           continue;
         let k = i;
         while (k > 0 && this.gameField[j][k - 1] === this.empty) --k;
-        if (k > 0 && this.gameField[j][k - 1] === this.gameField[j][i] &&
-          !temp.includes('' + j + (k - 1))) {
-          this.gameField[j][k - 1] *= 2;
-          this.score += this.gameField[j][k - 1];
-          this.gameField[j][i] = this.empty;
-          temp.push('' + j + (k - 1));
-          wasMove = true;
+        if (k > 0 && !temp.includes('' + j + (k - 1))) {
+          if (this.gameField[j][k - 1] === this.gameField[j][i]) {
+            this.gameField[j][k - 1] *= 2;
+            this.score += this.gameField[j][k - 1];
+            this.gameField[j][i] = this.empty;
+            temp.push('' + j + (k - 1));
+            wasMove = true;
+          }
         }
         if (k !== i) {
           this.gameField[j][k] = this.gameField[j][i];
@@ -151,16 +149,16 @@ class Field {
         if (this.gameField[j][i] === this.empty)
           continue;
         let k = i;
-        while (k < this.gameField.length - 1 && this.gameField[j][k + 1] ===
-          this.empty) ++k;
-        if (k < this.gameField.length - 1 && this.gameField[j][k + 1] ===
-          this.gameField[j][i] &&
-          !temp.includes('' + j + (k + 1))) {
-          this.gameField[j][k + 1] *= 2;
-          this.score += this.gameField[j][k + 1];
-          this.gameField[j][i] = this.empty;
-          temp.push('' + j + (k + 1));
-          wasMove = true;
+        const limit = this.gameField.length - 1;
+        while (k < limit && this.gameField[j][k + 1] === this.empty) ++k;
+        if (k < limit && !temp.includes('' + j + (k + 1))) {
+          if (this.gameField[j][k + 1] === this.gameField[j][i]) {
+            this.gameField[j][k + 1] *= 2;
+            this.score += this.gameField[j][k + 1];
+            this.gameField[j][i] = this.empty;
+            temp.push('' + j + (k + 1));
+            wasMove = true;
+          }
         }
         if (k !== i) {
           this.gameField[j][k] = this.gameField[j][i];
@@ -171,6 +169,4 @@ class Field {
     }
     return wasMove;
   }
-
-
 }
