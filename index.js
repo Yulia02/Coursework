@@ -1,6 +1,6 @@
 'use strict';
 
-let field = new Field();
+const field = new Field();
 
 const cells = document.getElementsByClassName('cell');
 
@@ -54,32 +54,32 @@ function gameOverVisual() {
   }, 2500);
 
   document.getElementsByClassName('right_block')[0].
-  addEventListener('click', () => {
-    document.getElementsByClassName('right_block')[0].style.backgroundColor =
+    addEventListener('click', () => {
+      document.getElementsByClassName('right_block')[0].style.backgroundColor =
       '#F5F5DC';
-    document.getElementsByClassName('right_block')[0].style.color = '#17a2b8';
-    document.getElementsByClassName('mask')[0].style.visibility = 'hidden';
-  });
+      document.getElementsByClassName('right_block')[0].style.color = '#17a2b8';
+      document.getElementsByClassName('mask')[0].style.visibility = 'hidden';
+    });
 }
 
 
 function keyPressed(event) {
   let wasMove = false;
   switch (event.keyCode) {
-    case 37:
-      wasMove = field.moveLeft();
-      break;
-    case 38:
-      wasMove = field.moveUp();
-      break;
-    case 39:
-      wasMove = field.moveRight();
-      break;
-    case 40:
-      wasMove = field.moveDown();
-      break;
-    default:
-      return;
+  case 37:
+    wasMove = field.moveLeft();
+    break;
+  case 38:
+    wasMove = field.moveUp();
+    break;
+  case 39:
+    wasMove = field.moveRight();
+    break;
+  case 40:
+    wasMove = field.moveDown();
+    break;
+  default:
+    return;
   }
   if (!field.gameOver()) {
     if (wasMove) {
@@ -89,7 +89,6 @@ function keyPressed(event) {
     }
   } else {
     gameOverVisual();
-    newGame();
   }
 }
 
