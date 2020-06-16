@@ -9,6 +9,7 @@
     "ecmaVersion": 2020
   },
   "globals": {
+    "Field": true,
     "BigInt": true
   },
   "rules": {
@@ -204,6 +205,10 @@
     ],
     "no-shadow-restricted-names": [
       "error"
+    ],
+    "no-unused-vars": [
+      "error",
+      {"varsIgnorePattern": "Field|newGame"}
     ],
     "no-use-before-define": [
       "error",
