@@ -23,9 +23,7 @@ class Field {
   checkFilling() {
     for (let i = 0; i < this.fieldSize; ++i) {
       for (let j = 0; j < this.fieldSize; ++j) {
-        if (this.gameField[i][j] === this.empty) {
-          return true;
-        }
+        if (this.gameField[i][j] === this.empty) return true;
       }
     }
     return false;
@@ -44,8 +42,7 @@ class Field {
   }
 
   gameOver() {
-    if (this.checkFilling())
-      return false;
+    if (this.checkFilling()) return false;
     for (let j = 0; j < this.fieldSize - 1; ++j) {
       for (let i = 0; i < this.fieldSize; ++i) {
         const fullRight = this.gameField[i][j] === this.gameField[i][j + 1];
@@ -61,8 +58,7 @@ class Field {
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = this.gameField.length - 2; i >= 0; --i) {
-        if (this.gameField[i][j] === this.empty)
-          continue;
+        if (this.gameField[i][j] === this.empty) continue;
         let k = i;
         const limit = this.gameField.length - 1;
         while (k < limit && this.gameField[k + 1][j] === this.empty) ++k;
@@ -90,8 +86,7 @@ class Field {
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = 1; i < this.gameField.length; ++i) {
-        if (this.gameField[i][j] === this.empty)
-          continue;
+        if (this.gameField[i][j] === this.empty) continue;
         let k = i;
         while (k > 0 && this.gameField[k - 1][j] === this.empty) --k;
         if (k > 0 && !temp.includes('' + (k - 1) + j)) {
@@ -118,8 +113,7 @@ class Field {
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = 1; i < this.gameField.length; ++i) {
-        if (this.gameField[j][i] === this.empty)
-          continue;
+        if (this.gameField[j][i] === this.empty) continue;
         let k = i;
         while (k > 0 && this.gameField[j][k - 1] === this.empty) --k;
         if (k > 0 && !temp.includes('' + j + (k - 1))) {
@@ -146,8 +140,7 @@ class Field {
     let wasMove = false;
     for (let j = 0; j < this.gameField.length; ++j) {
       for (let i = this.gameField.length - 2; i >= 0; --i) {
-        if (this.gameField[j][i] === this.empty)
-          continue;
+        if (this.gameField[j][i] === this.empty) continue;
         let k = i;
         const limit = this.gameField.length - 1;
         while (k < limit && this.gameField[j][k + 1] === this.empty) ++k;
